@@ -44,6 +44,7 @@ data = read_input(file)
 
 model = Model(HiGHS.Optimizer)
 
+# remover essa linha volta com os logs do HiGHS
 set_silent(model)
 
 @variable(model, x[1:data.n], Bin)

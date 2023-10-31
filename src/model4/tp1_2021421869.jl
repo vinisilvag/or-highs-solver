@@ -48,6 +48,7 @@ data = read_input(file)
 
 model = Model(HiGHS.Optimizer)
 
+# remover essa linha volta com os logs do HiGHS
 set_silent(model)
 
 @variable(model, x[1:data.n, 1:data.n], Bin)
@@ -57,7 +58,6 @@ for i = 1:data.n
   @constraint(model, sum(x[i, j] for j = 1:data.n) == 1)
 end
 
-
 for i = 1:data.n
   for j in data.g[i]
     for k = 1:data.n
@@ -66,8 +66,8 @@ for i = 1:data.n
   end
 end
 
-for i = 1:data.n
-  for j = 1:data.n
+for j = 1:data.n
+  for i = 1:data.n
     @constraint(model, y[j] >= x[i, j])
   end
 end

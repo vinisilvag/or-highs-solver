@@ -56,21 +56,20 @@ data = read_input(file)
 
 model = Model(HiGHS.Optimizer)
 
+# remover essa linha volta com os logs do HiGHS
 set_silent(model)
 
-@variable(model, x[1:data.n] >= 0)    # quantidade produzida
+@variable(model, x[1:data.n] >= 0)  # quantidade produzida
 @variable(model, S[1:data.n] >= 0)  # quantidade armazenada
 @variable(model, R[1:data.n] >= 0)  # quantidade nao entregue
 
-@constraint(model, x[1] == data.d[1] + S[1])
+@constraint(model, x[1] == data.d[1] + S[1] - R[1])
 
 for i = 2:data.n
   @constraint(model, S[i-1] + x[i] - R[i-1] == data.d[i] + S[i] - R[i])
 end
 
-for i = 1:data.n
-  @constraint(model, sum(x[i] for i = 1:data.n) == sum(data.d[i] for i = 1:data.n))
-end
+@constraint(model, sum(x[i] for i = 1:data.n) == sum(data.d[i] for i = 1:data.n))
 
 @objective(
   model,
