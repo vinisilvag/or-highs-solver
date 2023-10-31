@@ -65,7 +65,7 @@ for i = 1:data.n
   end
 end
 
-@objective(model, Max, sum(x[i, j] * data.w[i, j] for i = 1:data.n for j = 1:data.n))
+@objective(model, Max, sum(x[i, j] * data.w[i, j] for i = 1:data.n for j = 1:i-1))
 
 # print(model)
 
